@@ -1,7 +1,7 @@
-# Source: https://dash.plot.ly/getting-started
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+from dash.dependencies import Input, Output
 
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -15,25 +15,28 @@ app = dash.Dash(
 
 
 app.layout = html.Div(children=[
-    html.H1(children='Hello Dash'),
-
-    html.Div(children='''
-        Dash: A web application framework for Python.
-    '''),
-
-    dcc.Graph(
-        id='example-graph',
-        figure={
-            'data': [
-                {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': 'SF'},
-                {'x': [1, 2, 3], 'y': [2, 4, 5], 'type': 'bar', 'name': u'Montréal'},
-            ],
-            'layout': {
-                'title': 'Dash Data Visualization'
-            }
-        }
-    )
+    html.H1(children='Simple Dash app'),
+    html.P('Chart title:'),
+    dcc.Input(id='input-field', value='This is the title of my pie chart', type='text'),
+    dcc.Graph(id='pie-chart')
 ])
+
+
+@app.callback(
+    Output(component_id='pie-chart', component_property='figure'),
+    [Input(component_id='input-field', component_property='value')]
+)
+def update_output_div(input_value):
+    return {
+        'data': [
+            {
+                'values': [10, 90],
+                'labels': ['tiny part', 'big part'],
+                'type': 'pie'
+            }
+        ],
+        'layout': {'title': input_value}
+    }
 
 
 if __name__ == '__main__':
