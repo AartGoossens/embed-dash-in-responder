@@ -1,4 +1,3 @@
-# Source: http://python-responder.org/en/latest/
 import responder
 
 import dash_app
